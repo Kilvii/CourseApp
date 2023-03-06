@@ -38,13 +38,28 @@ class ViewController: UIViewController {
         
         let lableSize = titleLable.sizeThatFits(.init(width: width, height: view.bounds.height))
         
-        titleLable.frame = .init(x: Constants.padding, y: 150, width: width, height: lableSize.height)
-        phoneTextField.frame = .init(x: Constants.padding, y: titleLable.frame.maxY + Constants.space, width: width, height: 50)
-        loginButton.frame = .init(x: Constants.padding, y: phoneTextField.frame.maxY + Constants.space, width: width, height: 50)
+        titleLable.frame = .init(
+            x: Constants.padding,
+            y: 150,
+            width: width,
+            height: lableSize.height
+        )
+        phoneTextField.frame = .init(
+            x: Constants.padding,
+            y: titleLable.frame.maxY + Constants.space,
+            width: width,
+            height: 50
+        )
+        loginButton.frame = .init(
+            x: Constants.padding,
+            y: phoneTextField.frame.maxY + Constants.space,
+            width: width,
+            height: 50
+        )
         
-        titleLable.center = CGPoint(x: view.bounds.midX, y: 175)
-        phoneTextField.center = CGPoint(x: view.bounds.midX, y: 255)
-        loginButton.center = CGPoint(x: view.bounds.midX, y: 325)
+        //titleLable.center = CGPoint(x: view.bounds.midX, y: 175)
+        //phoneTextField.center = CGPoint(x: view.bounds.midX, y: 255)
+        //loginButton.center = CGPoint(x: view.bounds.midX, y: 325)
         
     }
     
@@ -61,15 +76,18 @@ class ViewController: UIViewController {
         label.font = .systemFont(ofSize: 32, weight: .medium)
         label.textColor = .black
         label.numberOfLines = 0
-        label.text = "Вход\nпо телефону\nчто-то ещё"
+        label.text = "Вход\nпо телефону\nВход\nпо телефону\nВход\nпо телефону"
         return label
     }()
     
     lazy var phoneTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .green
-        textField.attributedPlaceholder = NSAttributedString(string: "Телефон", attributes: [NSAttributedString.Key.foregroundColor: UIColor.red])
-        textField.textColor = .darkGray
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "Телефон",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]
+        )
+        textField.textColor = .darkText
         textField.font = .systemFont(ofSize: 20, weight: .regular)
         return textField
     }()
