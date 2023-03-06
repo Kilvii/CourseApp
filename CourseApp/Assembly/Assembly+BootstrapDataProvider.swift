@@ -1,8 +1,8 @@
 //
-//  Assembly+DataProvider.swift
+//  Assembly+bootstrapDataProvider.swift
 //  CourseApp
 //
-//  Created by User on 03.03.2023.
+//  Created by User on 06.03.2023.
 //
 
 import Foundation
@@ -10,7 +10,7 @@ import Foundation
 extension Assembly {
     
     var bootstrapDataProvider: BootstrapDataProvider {
-        BootstrapDataProvider(apiClient: apiClient, group: group)
+        BootstrapDataProvider(apiClient: apiClient)
     }
     
 }
