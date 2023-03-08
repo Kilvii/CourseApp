@@ -12,83 +12,102 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .lightText
+        view.addSubview(containerView)
+        phoneTextField.delegate = self
         
-        view.backgroundColor = .lightGray
-        
-        //view.addSubview(containerView)
-        
-        view.addSubview(titleLable)
-        view.addSubview(phoneTextField)
-        view.addSubview(loginButton)
+        containerView.addSubview(titleLable)
+        containerView.addSubview(phoneTextField)
+        containerView.addSubview(loginButton)
         
     }
     
     enum Constants {
         static let padding: CGFloat = 16
         static let space: CGFloat = 20
+        static let upperIndent: CGFloat = 150
+        static let panelHeight: CGFloat = 50
+        static let textSize: CGFloat = 32
     }
     
-    //доделать
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        //containerView.center = .init(x: view.bounds.midX, y: 250)
         let width = view.bounds.width - 2 * Constants.padding
         
-        let lableSize = titleLable.sizeThatFits(.init(width: width, height: view.bounds.height))
+        let labelSize = titleLable.sizeThatFits(
+            .init(
+                width: width,
+                height: view.bounds.height
+            )
+        )
+
         
         titleLable.frame = .init(
-            x: Constants.padding,
-            y: 150,
+            x: containerView.frame.maxX,
+            y: containerView.frame.maxY,
             width: width,
-            height: lableSize.height
-        )
-        phoneTextField.frame = .init(
-            x: Constants.padding,
-            y: titleLable.frame.maxY + Constants.space,
-            width: width,
-            height: 50
-        )
-        loginButton.frame = .init(
-            x: Constants.padding,
-            y: phoneTextField.frame.maxY + Constants.space,
-            width: width,
-            height: 50
+            height: labelSize.height
         )
         
-        //titleLable.center = CGPoint(x: view.bounds.midX, y: 175)
-        //phoneTextField.center = CGPoint(x: view.bounds.midX, y: 255)
-        //loginButton.center = CGPoint(x: view.bounds.midX, y: 325)
+        
+        phoneTextField.frame = .init(
+            x: containerView.frame.maxX,
+            y: titleLable.frame.maxY + Constants.space,
+            width: width,
+            height: Constants.panelHeight
+        )
+        
+        loginButton.frame = .init(
+            x: containerView.frame.maxX,
+            y: phoneTextField.frame.maxY + Constants.space,
+            width: width,
+            height: Constants.panelHeight
+        )
+        
+        containerView.frame = .init(
+            x: Constants.padding,
+            y: Constants.upperIndent,
+            width: width,
+            height: labelSize.height + Constants.panelHeight*2 + Constants.space*2
+        )
+            
         
     }
     
-//    lazy var containerView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .magenta
-//        view.clipsToBounds = true
-//        return view
-//    }()
+    lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .lightText
+        view.clipsToBounds = true
+        return view
+    }()
     
     lazy var titleLable: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .green
-        label.font = .systemFont(ofSize: 32, weight: .medium)
-        label.textColor = .black
+        label.backgroundColor = .lightGray
+        label.font = .systemFont(ofSize: Constants.textSize, weight: .medium)
+        label.textColor = .white
         label.numberOfLines = 0
-        label.text = "Вход\nпо телефону\nВход\nпо телефону\nВход\nпо телефону"
+        label.layer.cornerRadius = 5.0
+        label.layer.borderWidth = 1.0
+        label.layer.borderColor = UIColor.white.cgColor
+        label.text = "Вход"
         return label
     }()
     
     lazy var phoneTextField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .green
+        textField.backgroundColor = .lightGray
         textField.attributedPlaceholder = NSAttributedString(
             string: "Телефон",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
         )
-        textField.textColor = .darkText
-        textField.font = .systemFont(ofSize: 20, weight: .regular)
+        textField.textColor = .white
+        textField.font = .systemFont(ofSize: Constants.textSize, weight: .medium)
+        textField.layer.cornerRadius = 5.0
+        textField.layer.borderWidth = 1.0
+        textField.layer.borderColor = UIColor.white.cgColor
+
         return textField
     }()
     
@@ -97,9 +116,23 @@ class ViewController: UIViewController {
         button.backgroundColor = .blue
         button.setTitle("Войдите", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        button.titleLabel?.font = .systemFont(ofSize: Constants.textSize, weight: .bold)
+        button.layer.cornerRadius = 5.0
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.white.cgColor
         return button
     }()
     
 }
 
+extension ViewController : UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let newLength: Int = (textField.text! as NSString).length + (string as NSString).length - range.length
+        let allowedCharacters = "0123456789"
+        let numberOnly = CharacterSet.init(charactersIn: allowedCharacters).inverted
+        let stringValid = string.rangeOfCharacter(from: numberOnly) == nil
+        return (stringValid && (newLength <= 11))
+        
+    }
+}
