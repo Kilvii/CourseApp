@@ -71,7 +71,6 @@ class ViewController: UIViewController {
             width: width,
             height: labelSize.height + Constants.panelHeight*2 + Constants.space*2
         )
-            
         
     }
     
