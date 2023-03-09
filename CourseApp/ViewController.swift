@@ -127,7 +127,8 @@ class ViewController: UIViewController {
 extension ViewController : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        let newLength: Int = (textField.text! as NSString).length + (string as NSString).length - range.length
+        guard let text = textField.text else {return false}
+        let newLength: Int = (text as NSString).length + (string as NSString).length - range.length
         let allowedCharacters = "0123456789"
         let numberOnly = CharacterSet.init(charactersIn: allowedCharacters).inverted
         let stringValid = string.rangeOfCharacter(from: numberOnly) == nil
