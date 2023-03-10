@@ -122,17 +122,39 @@ class ViewController: UIViewController {
         return button
     }()
     
+    func formattedNumber(number: String) -> String {
+        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let mask = "# (###) ###-##-##"
+        var result = ""
+        var index = cleanPhoneNumber.startIndex
+        for char in mask where index < cleanPhoneNumber.endIndex{
+            if char == "#" {
+                result.append(cleanPhoneNumber[index])
+                index = cleanPhoneNumber.index(after: index)
+            }
+            else{
+                result.append(char)
+            }
+        }
+        return result
+    }
 }
+
 
 extension ViewController : UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         guard let text = textField.text else {return false}
-        let newLength: Int = (text as NSString).length + (string as NSString).length - range.length
-        let allowedCharacters = "0123456789"
-        let numberOnly = CharacterSet.init(charactersIn: allowedCharacters).inverted
-        let stringValid = string.rangeOfCharacter(from: numberOnly) == nil
-        return (stringValid && (newLength <= 11))
+//        let _: Int = (text as NSString).length + (string as NSString).length - range.length
+//        let allowedCharacters = "0123456789"
+//        let numberOnly = CharacterSet.init(charactersIn: allowedCharacters).inverted
+//        let stringValid = string.rangeOfCharacter(from: numberOnly) == nil
+//        (stringValid && (newLength <= 11))
+        
+        let newString = (text as NSString).replacingCharacters(in: range, with: string)
+        textField.text = formattedNumber(number: newString)
+        
+        return false
         
     }
 }
