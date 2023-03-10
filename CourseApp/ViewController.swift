@@ -123,14 +123,14 @@ class ViewController: UIViewController {
     }()
     
     func formattedNumber(number: String) -> String {
-        let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let phoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         let mask = "# ### ###-##-##"
         var result = ""
-        var index = cleanPhoneNumber.startIndex
-        for char in mask where index < cleanPhoneNumber.endIndex{
+        var index = phoneNumber.startIndex
+        for char in mask where index < phoneNumber.endIndex{
             if char == "#" {
-                result.append(cleanPhoneNumber[index])
-                index = cleanPhoneNumber.index(after: index)
+                result.append(phoneNumber[index])
+                index = phoneNumber.index(after: index)
             }
             else{
                 result.append(char)
