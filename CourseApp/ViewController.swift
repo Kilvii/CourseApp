@@ -124,7 +124,7 @@ class ViewController: UIViewController {
     
     func formattedNumber(number: String) -> String {
         let cleanPhoneNumber = number.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        let mask = "# (###) ###-##-##"
+        let mask = "# ### ###-##-##"
         var result = ""
         var index = cleanPhoneNumber.startIndex
         for char in mask where index < cleanPhoneNumber.endIndex{
