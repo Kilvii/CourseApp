@@ -8,9 +8,72 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    private enum Constants {
+        
+        enum Margin {
+            
+            static let horizontalMainStackView: CGFloat = 30
+            static let horizontalFooterStackView: CGFloat = 78
+            static let bottom: CGFloat = 50
+            
+        }
+        
+        static let buttonHeight: CGFloat = 42
+        static let authTextFieldContainerViewHeight: CGFloat = 56
+        
+        static let buttonСornerRadius: CGFloat = 8
+        
+        static let defaultAnimationDuration: Double = 0.25
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor(named: "Colors/Background")
+        
+        view.addSubview(logoImageView)
+        view.addSubview(mainStackView)
+        view.addSubview(footerStackView)
+        
+        let mainStackViewTopConstraint = mainStackView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor)
+        self.mainStackViewTopConstraint = mainStackViewTopConstraint
+        
+        let logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.topAnchor)
+        self.logoImageViewTopConstraint = logoImageViewTopConstraint
+        
+        NSLayoutConstraint.activate(
+            [
+                logoImageViewTopConstraint,
+                logoImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+
+                mainStackViewTopConstraint,
+                mainStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Margin.horizontalMainStackView),
+                mainStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Margin.horizontalMainStackView),
+                
+                authTextFieldContainerView.heightAnchor.constraint(equalToConstant: Constants.authTextFieldContainerViewHeight),
+                authTextFieldContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Margin.horizontalMainStackView),
+                authTextFieldContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Margin.horizontalMainStackView),
+                
+                loginButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+                
+                footerStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.Margin.bottom),
+                footerStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.Margin.horizontalFooterStackView),
+                footerStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.Margin.horizontalFooterStackView),
+            ]
+        )
+        
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         NotificationCenter.default.addObserver(
             self,
@@ -18,171 +81,215 @@ class ViewController: UIViewController {
             name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillHideNotification(_ :)),
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
-        view.backgroundColor = .lightText
-        view.addSubview(containerView)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
         
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(phoneTextField)
-        containerView.addSubview(loginButton)
-        
-       let containerCenterYConstraint = containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-       self.containerCenterYConstraint = containerCenterYConstraint
-        
-        NSLayoutConstraint.activate(
-            [
-                containerView.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-                containerView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-                containerView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16),
-                containerView.bottomAnchor.constraint(equalTo: loginButton.bottomAnchor),
-                
-                containerCenterYConstraint,
-                
-                titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
-                titleLabel.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-                titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-//                titleLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 120),
-                
-                phoneTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-                phoneTextField.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-                phoneTextField.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-                phoneTextField.heightAnchor.constraint(equalToConstant: 50),
-                
-                loginButton.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 20),
-                loginButton.leftAnchor.constraint(equalTo: containerView.leftAnchor),
-                loginButton.rightAnchor.constraint(equalTo: containerView.rightAnchor),
-                loginButton.heightAnchor.constraint(equalToConstant: 50)
-            
-            ]
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
         )
     }
     
-    enum Constants {
-        static let padding: CGFloat = 16
-        static let space: CGFloat = 20
-        static let upperIndent: CGFloat = 150
-        static let panelHeight: CGFloat = 50
-        static let textSize: CGFloat = 32
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
     }
     
-    private var containerCenterYConstraint: NSLayoutConstraint?
-    private var tableViewBottomLayoutConstraint: NSLayoutConstraint?
+    private var mainStackViewTopConstraint: NSLayoutConstraint?
+    private var logoImageViewTopConstraint: NSLayoutConstraint?
     
-    lazy var containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .lightText
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 5.0
-        view.layer.borderWidth = 3.0
-        view.layer.borderColor = UIColor.black.cgColor
-        return view
+    private var mainStackViewSubviews: [UIView] {
+        [
+            titleLable,
+            authTextFieldContainerView,
+            loginButton
+        ]
+    }
+    
+    private var footerStackViewSubviews: [UIView] {
+        [
+            appleCircleLogoImageView,
+            vkCircleLogoImageView,
+            okCircleLogoImageView,
+            facebookCircleLogoImageView
+        ]
+    }
+
+    private lazy var logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Auth/BackgroundLogo")
+        
+        return imageView
     }()
     
-    lazy var titleLabel: UILabel = {
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: mainStackViewSubviews)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.spacing = 30
+        
+        return stackView
+    }()
+
+    private lazy var titleLable: UILabel = {
         let label = UILabel()
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        
-        label.backgroundColor = .lightGray
-        label.font = .systemFont(ofSize: Constants.textSize, weight: .medium)
-        label.textColor = .white
+        label.font = .systemFont(ofSize: 26, weight: .init(800))
+        label.textColor = UIColor(named: "Colors/Black")
         label.numberOfLines = 0
-        label.layer.cornerRadius = 5.0
-        label.layer.borderWidth = 1.5
-        label.layer.borderColor = UIColor.black.cgColor
-        label.text = "Вход по телефону\nВход по телефону"
+        label.text = "ВХОД ИЛИ\nРЕГИСТРАЦИЯ"
         
         return label
     }()
     
-    lazy var phoneTextField: UITextField = {
-        let textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .lightGray
-        textField.attributedPlaceholder = NSAttributedString(
-            string: "Телефон",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
-        )
-        textField.textColor = .white
-        textField.font = .systemFont(ofSize: Constants.textSize, weight: .medium)
-        textField.layer.cornerRadius = 5.0
-        textField.layer.borderWidth = 1.5
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.delegate = self
-
-        return textField
+    private lazy var authTextFieldContainerView: AuthTextFieldContainerView = {
+        let view = AuthTextFieldContainerView()
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
     }()
     
-    lazy var loginButton: UIButton = {
-        let button = UIButton()
+    private lazy var loginButton: UIButton = {
+        let button = UIButton.init()
+        
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
-        button.setTitle("Войдите", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: Constants.textSize, weight: .bold)
-        button.layer.cornerRadius = 5.0
-        button.layer.borderWidth = 1.5
-        button.layer.borderColor = UIColor.black.cgColor
-       
+        button.backgroundColor = UIColor(named: "Colors/ActiveButton")
+        button.setTitleColor(UIColor(named: "Colors/White"), for: .normal)
+        button.setTitle("Получить код", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .init(500))
+        button.layer.cornerRadius = Constants.buttonСornerRadius
+        button.addTarget(self, action: #selector(authButtonTapped), for: .touchUpInside)
+        
         return button
     }()
     
+    private lazy var footerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: footerStackViewSubviews)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        stackView.spacing = 12
+        
+        return stackView
+    }()
+    
+    private lazy var appleCircleLogoImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Auth/AppleCircleLogo")
+        
+        return imageView
+    }()
+    
+    private lazy var vkCircleLogoImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Auth/VKCircleLogo")
+        
+        return imageView
+    }()
+    
+    private lazy var okCircleLogoImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Auth/OKCircleLogo")
+        
+        return imageView
+    }()
+    
+    private lazy var facebookCircleLogoImageView: UIImageView = {
+        let imageView = UIImageView()
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Auth/FacebookCircleLogo")
+        
+        return imageView
+    }()
+    
 }
 
-extension ViewController : UITextFieldDelegate {
-    @objc func keyboardWillShowNotification(_ notification: Notification){
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 1
+extension ViewController {
+    
+    private func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc
+    private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @objc
+    private func keyboardWillShowNotification(_ notification: Notification) {
+        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.defaultAnimationDuration
         let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect ?? CGRect(x: 0, y: 0, width: 0, height: 260)
         
-        UIView.animate(withDuration: duration){
-            self.view.backgroundColor = .orange
-
-            self.containerCenterYConstraint?.constant = -keyboardRect.height / 2
-
+        UIView.animate(withDuration: animationDuration, delay: 0) {
+            self.logoImageViewTopConstraint?.constant = -(keyboardRect.height / 8)
+            self.mainStackViewTopConstraint?.constant = -(keyboardRect.height / 8)
+            
             self.view.layoutIfNeeded()
         }
     }
     
-    @objc func keyboardWillHideNotification(_ notification: Notification){
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 1
-    
-        UIView.animate(withDuration: duration){
-            self.view.backgroundColor = .lightText
-
-            self.containerCenterYConstraint?.constant = 0
-
+    @objc
+    private func keyboardWillHideNotification(_ notification: Notification) {
+        let animationDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? Constants.defaultAnimationDuration
+        
+        UIView.animate(withDuration: animationDuration, delay: 0) {
+            self.logoImageViewTopConstraint?.constant = 0
+            self.mainStackViewTopConstraint?.constant = 0
+            
             self.view.layoutIfNeeded()
         }
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-//        UIView.animate(withDuration: 1){
-//            self.view.backgroundColor = .orange
-//            self.titleLabel.layer.borderColor = UIColor.black.cgColor
-//            self.phoneTextField.layer.borderColor = UIColor.black.cgColor
-//            self.loginButton.layer.borderColor = UIColor.black.cgColor
-//            self.containerCenterYConstraint?.constant = -250
-//
-//            self.view.layoutIfNeeded()
-//        }
-        
-    }
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-
-        guard let text = textField.text else {return false}
-        let newLength: Int = (text as NSString).length + (string as NSString).length - range.length
-        let allowedCharacters = "0123456789"
-        let numberOnly = CharacterSet.init(charactersIn: allowedCharacters).inverted
-        let stringValid = string.rangeOfCharacter(from: numberOnly) == nil
-        return (stringValid && (newLength <= 11))
-
     }
 }
+
+extension ViewController {
+    
+    @objc
+    private func authButtonTapped() {
+        dismissKeyboard()
+        
+        if (authTextFieldContainerView.isInputTextCorrect()) {
+            
+            // Переход к следующему экрану
+            
+            return
+        } else {
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
+            
+            return
+        }
+    }
+    
+}
+

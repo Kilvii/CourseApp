@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		CE7C78DF29B658FA00A4B73A /* Assembly+BootstrapDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C78DE29B658FA00A4B73A /* Assembly+BootstrapDataProvider.swift */; };
+		CE7F3DFC29DCAF36003910A2 /* AuthTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F3DFB29DCAF36003910A2 /* AuthTextFieldContainerView.swift */; };
+		CE7F3DFE29DCAF89003910A2 /* AuthTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F3DFD29DCAF89003910A2 /* AuthTextFieldView.swift */; };
+		CE7F3E0029DCAFF2003910A2 /* AuthTextFieldPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7F3DFF29DCAFF2003910A2 /* AuthTextFieldPadding.swift */; };
+		CE8342FF29C217B800C7574A /* MaterialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8342FE29C217B800C7574A /* MaterialTextField.swift */; };
 		CE96AEA129B1C121001EC86A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE96AEA029B1C121001EC86A /* AppDelegate.swift */; };
 		CE96AEA329B1C121001EC86A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE96AEA229B1C121001EC86A /* SceneDelegate.swift */; };
 		CE96AEA529B1C121001EC86A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE96AEA429B1C121001EC86A /* ViewController.swift */; };
@@ -35,6 +39,10 @@
 
 /* Begin PBXFileReference section */
 		CE7C78DE29B658FA00A4B73A /* Assembly+BootstrapDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Assembly+BootstrapDataProvider.swift"; sourceTree = "<group>"; };
+		CE7F3DFB29DCAF36003910A2 /* AuthTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextFieldContainerView.swift; sourceTree = "<group>"; };
+		CE7F3DFD29DCAF89003910A2 /* AuthTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextFieldView.swift; sourceTree = "<group>"; };
+		CE7F3DFF29DCAFF2003910A2 /* AuthTextFieldPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextFieldPadding.swift; sourceTree = "<group>"; };
+		CE8342FE29C217B800C7574A /* MaterialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialTextField.swift; sourceTree = "<group>"; };
 		CE96AE9D29B1C121001EC86A /* CourseApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CourseApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE96AEA029B1C121001EC86A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE96AEA229B1C121001EC86A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,6 +81,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE8342FD29C2179B00C7574A /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				CE8342FE29C217B800C7574A /* MaterialTextField.swift */,
+				CE7F3DFB29DCAF36003910A2 /* AuthTextFieldContainerView.swift */,
+				CE7F3DFD29DCAF89003910A2 /* AuthTextFieldView.swift */,
+				CE7F3DFF29DCAFF2003910A2 /* AuthTextFieldPadding.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		CE96AE9429B1C121001EC86A = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +111,7 @@
 		CE96AE9F29B1C121001EC86A /* CourseApp */ = {
 			isa = PBXGroup;
 			children = (
+				CE8342FD29C2179B00C7574A /* UI */,
 				CE96AEBB29B1C212001EC86A /* Assembly */,
 				CE96AEBA29B1C208001EC86A /* DataStorage */,
 				CE96AEB829B1C1DA001EC86A /* Entity */,
@@ -252,15 +272,19 @@
 			files = (
 				CE96AEC129B1C2E4001EC86A /* DateFormatter.swift in Sources */,
 				CE96AEC729B1C366001EC86A /* UserDefaultsStorage.swift in Sources */,
+				CE7F3DFC29DCAF36003910A2 /* AuthTextFieldContainerView.swift in Sources */,
+				CE8342FF29C217B800C7574A /* MaterialTextField.swift in Sources */,
 				CE96AED929B1C48D001EC86A /* Assembly+Formatter.swift in Sources */,
 				CE96AEDD29B1C556001EC86A /* BootstrapDataProvider.swift in Sources */,
 				CE96AEDB29B1C4AF001EC86A /* Assembly+ApiClient.swift in Sources */,
+				CE7F3E0029DCAFF2003910A2 /* AuthTextFieldPadding.swift in Sources */,
 				CE96AED329B1C426001EC86A /* CityResponseData.swift in Sources */,
 				CE96AED529B1C451001EC86A /* Assembly.swift in Sources */,
 				CE96AED129B1C403001EC86A /* City.swift in Sources */,
 				CE96AEA529B1C121001EC86A /* ViewController.swift in Sources */,
 				CE96AEA129B1C121001EC86A /* AppDelegate.swift in Sources */,
 				CE96AEC529B1C344001EC86A /* DataStorage.swift in Sources */,
+				CE7F3DFE29DCAF89003910A2 /* AuthTextFieldView.swift in Sources */,
 				CE96AEC929B1C386001EC86A /* ApiError.swift in Sources */,
 				CE96AEA329B1C121001EC86A /* SceneDelegate.swift in Sources */,
 				CE96AED729B1C472001EC86A /* Assembly+DataStorage.swift in Sources */,
